@@ -44,8 +44,9 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <version>5.10.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -75,8 +76,7 @@
                         </property>
                     </systemProperties>
 
-
-                </configuration>
+               </configuration>
             </plugin>
             <plugin>
                 <groupId>io.qameta.allure</groupId>
@@ -86,6 +86,7 @@
                     <reportVersion>2.15.0</reportVersion>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>
