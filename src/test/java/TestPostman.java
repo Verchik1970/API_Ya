@@ -18,50 +18,61 @@ public class TestPostman {
                 .then().statusCode(200);
 
     }
-    static String authKey;
-    @BeforeAll
 
+    static String authKey;
+
+    @BeforeAll
+    @DisplayName("Получение авторизационного ключа")
     public static void skillApiKeyGetTest() {
 
         Response response = given().header("email", "ver@mail.ee").header("password", "121970")
                 .when().spec(PetsSkill.requestSpecification()).get("/api/key");
         String responseStr = response.getBody().asString();
 
-            JsonPath jsonPath = new JsonPath(responseStr);
-            authKey = jsonPath.get("key");
+        JsonPath jsonPath = new JsonPath(responseStr);
+        authKey = jsonPath.get("key");
 
     }
 
 
     @Test
+    @DisplayName("Создание питомца")
     public void createPetTest() {
         baseURI = "https://petfriends.skillfactory.ru/";
 
         given()
                 .header("auth_key", authKey)
                 .contentType("application/json")
-                .body("{ \"name\": \"Fluffy\", \"animal_type\": \"cat\", \"age\": 2 }")
+                .body("{ \"name\": \"Lucky\", \"animal_type\": \"dog\", \"age\": 14 }")
                 .when()
                 .post("/api/create_pet_simple")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .log().body();
     }
 
+    @Test
+    @DisplayName("Получение списка моих питомцев")
+    public void getPetListTest() {
+        baseURI = "https://petfriends.skillfactory.ru/";
+
+        given()
+                .header("auth_key", authKey)
+                .contentType("application/json")
+                .param("filter", "my_pets")
+                .when()
+                .get("/api/pets")
+                .then()
+                .statusCode(200)
+                .log().body();
+
+
+    }
 }
 
 
 
-  /*  @Test
-    public void skillApiPetsGetTest() {
 
-        Response response =  given().header("auth_key","getBody").queryParam("my_pets")
-                .when().spec(PetsSkill.requestSpecification()).get("/api/pets")
-                ;
-
-        String getPets = response.getBody().prettyPrint();
-
-
-    }*/
 
 
 
