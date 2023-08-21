@@ -1,19 +1,16 @@
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.*;
 import static io.restassured.RestAssured.*;
 
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class TestPostman {
-
 
     @Test
     @DisplayName("проверка кода 200")
 
-    public void skillGetTest() {
+    public void askillGetTest() {
         RestAssured.given().spec(PetsSkill.requestSpecification()).get("/login")
                 .then().statusCode(200);
 
@@ -46,7 +43,7 @@ public class TestPostman {
         String response = given()
                 .header("auth_key", authKey)
                 .contentType("application/json")
-                .body("{ \"name\": \"Toto\", \"animal_type\": \"dog\", \"age\": 5 }")
+                .body("{ \"name\": \"TOTO\", \"animal_type\": \"dog\", \"age\": 14 }")
                 .when()
                 .post("/api/create_pet_simple")
                 .then()
@@ -77,7 +74,7 @@ public class TestPostman {
     }
     @Test
     @DisplayName("delete")
-    public void deletePetTest() {
+    public void ldeletePetTest() {
         baseURI = "https://petfriends.skillfactory.ru/";
 
         given()
