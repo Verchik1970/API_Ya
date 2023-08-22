@@ -21,6 +21,7 @@ public class TestPostman {
     static String password = "121970";
     public String petId;
 
+
     @BeforeAll
     @DisplayName("Получение авторизационного ключа")
     public static void skillApiKeyGetTest() {
@@ -31,7 +32,7 @@ public class TestPostman {
 
         JsonPath jsonPath = new JsonPath(responseStr);
         authKey = jsonPath.get("key");
-
+        System.out.println(authKey);
     }
 
 
@@ -53,6 +54,8 @@ public class TestPostman {
         System.out.println(response);
         JsonPath jsonPath = new JsonPath(response);
         petId = jsonPath.get("id");
+
+        System.out.println(petId);
 
     }
 
@@ -76,16 +79,14 @@ public class TestPostman {
     @DisplayName("delete")
     public void ldeletePetTest() {
         baseURI = "https://petfriends.skillfactory.ru/";
-
         given()
                 .header("auth_key", authKey)
                 .contentType("application/json")
                 .when()
-                .delete("/api/pets/"+petId)
+                .delete("api/pets/" + petId)
                 .then()
                 .statusCode(200)
                 .log().body();
-
 
     }
 
