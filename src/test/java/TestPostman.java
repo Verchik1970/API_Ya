@@ -1,11 +1,16 @@
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import static io.restassured.RestAssured.*;
 
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
 public class TestPostman {
+
+
 
     @Test
     @DisplayName("проверка кода 200")
@@ -19,7 +24,8 @@ public class TestPostman {
     static String authKey;
     static String email = "ver@mail.ee";
     static String password = "121970";
-    public String petId;
+    static String petId;
+    static String petIdNew;
 
 
     @BeforeAll
@@ -76,8 +82,36 @@ public class TestPostman {
 
     }
     @Test
+    @DisplayName("Обновление информации о питомце")
+    public void updatePetInfoTest() {
+        baseURI = "https://petfriends.skillfactory.ru/";
+
+        String response1 = given()
+                .header("auth_key", authKey)
+                .contentType("application/json")
+                .body("{ \"name\": \"AVVA\", \"animal_type\": \"dog\", \"age\": 6 }")
+                .when()
+                .put("/api/pets/" + petId)
+                .then()
+                .statusCode(200)
+                .extract().response().asString()
+                ;
+        System.out.println(response1);
+        JsonPath jsonPath1 = new JsonPath(response1);
+        petIdNew = jsonPath1.get("id");
+
+        System.out.println(petIdNew);
+
+    }
+
+    @Test
+    @DisplayName("сравнение petId")
+    public void ycomparePetId(){
+       Assertions.assertEquals(petId, petIdNew);
+    }
+    @Test
     @DisplayName("delete")
-    public void ldeletePetTest() {
+    public void zdeletePetTest() {
         baseURI = "https://petfriends.skillfactory.ru/";
         given()
                 .header("auth_key", authKey)
@@ -89,7 +123,6 @@ public class TestPostman {
                 .log().body();
 
     }
-
 }
 
 
